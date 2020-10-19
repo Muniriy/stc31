@@ -107,10 +107,12 @@ public class PersonSorter {
             String name = null;
             Sex sex = null;
             switch (sexNumber) {
-                case 0: sex = Sex.MAN;
+                case 0:
+                    sex = Sex.MAN;
                     name = possibleMenNames[rand.nextInt(possibleMenNames.length)];
                     break;
-                case 1: sex = Sex.WOMAN;
+                case 1:
+                    sex = Sex.WOMAN;
                     name = possibleWomenNames[rand.nextInt(possibleWomenNames.length)];
                     break;
                 default:
