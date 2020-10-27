@@ -92,7 +92,10 @@ public class Person implements ValidityChecker {
 
     @Override
     public String toString() {
-        return "Pet owner: " + name + " of " + age + " years old (" + gender.getGenderType() + ")";
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", gender=" + gender +
+                ", age=" + age +
+                '}';
     }
-
 }

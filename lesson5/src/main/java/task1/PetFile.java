@@ -17,7 +17,8 @@ public class PetFile {
 
     /**
      * The entry point of PetFile program.
-     *
+     * It allows to create unique pets, modify, add , display
+     * and sort them
      *
      * @param args Array with parameters of the program
      */
