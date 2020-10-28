@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>lesson7</artifactId>
-    <version>1.1</version>
+    <artifactId>lesson8</artifactId>
+    <version>1</version>
     <build>
         <plugins>
             <plugin>
@@ -37,6 +37,5 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
 
 </project>
