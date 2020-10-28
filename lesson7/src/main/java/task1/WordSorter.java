@@ -40,7 +40,7 @@ public class WordSorter {
     private static void displayDictionary(Set<String> wordSet) {
         if (!wordSet.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder("Dictionary contains:");
-            Iterator iterator = wordSet.iterator();
+            Iterator<String> iterator = wordSet.iterator();
             int wordNo = 1;
             while (iterator.hasNext()) {
                 stringBuilder.append("\n");

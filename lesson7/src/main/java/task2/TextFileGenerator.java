@@ -3,8 +3,8 @@ package task2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 public class TextFileGenerator {
 
@@ -12,6 +12,7 @@ public class TextFileGenerator {
     private static final String GENERATED_FILES_PATH = "lesson7/src/main/resources/task2/files";
     private static final int FILE_AMOUNT = 10;
     private static final float PROBABILITY = 0.1F;
+    private static final int MAX_FILE_SIZE = 2;
 
 
     /**
@@ -23,7 +24,7 @@ public class TextFileGenerator {
     public static void main(String[] args) {
         WordGenerator wordGenerator = new WordGenerator();
         String[] wordsWithProbabilities = wordGenerator.generateDictionary();
-        getFiles(GENERATED_FILES_PATH, FILE_AMOUNT, 10, wordsWithProbabilities, PROBABILITY);
+        getFiles(GENERATED_FILES_PATH, FILE_AMOUNT, MAX_FILE_SIZE, wordsWithProbabilities, PROBABILITY);
     }
 
     /**
@@ -46,8 +47,9 @@ public class TextFileGenerator {
             String text = textGenerator.generateText();
             log.info("File {}: \n{}", fileNo + 1, text);
             String fileName = path + "/" + (fileNo + 1) + ".txt";
-            try (FileWriter myWriter = new FileWriter(fileName)) {
-                myWriter.write(text);
+            try (RandomAccessFile f = new RandomAccessFile(fileName, "rw")) {
+                f.writeBytes(text);
+                f.setLength(size);
             } catch (IOException e) {
                 log.error(e);
             }

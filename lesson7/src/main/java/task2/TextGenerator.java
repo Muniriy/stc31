@@ -92,16 +92,32 @@ public class TextGenerator {
                 word = makeWordBeginWithCapitalLetter(word);
             }
             sentence.append(word);
-            if (wordNo != wordAmount - 1) {
-                boolean commaPresence = random.nextBoolean();
-                if (commaPresence) {
-                    sentence.append(",");
-                }
-                sentence.append(" ");
-            }
+            sentence.append(generateCommaAndSpaceAfterWord(random, wordAmount, wordNo));
         }
         sentence.append(generateSentenceEnding(random));
         return sentence.toString();
+    }
+
+    /**
+     * This method allows to generate optional comma and
+     * space after the word, if it is not the last in the
+     * sentence
+     *
+     * @param random     the instance of Random
+     * @param wordAmount the number of words in the sentence
+     * @param wordNo     the index of a word in the sentence
+     * @return           the string after the word
+     */
+    private String generateCommaAndSpaceAfterWord(Random random, int wordAmount, int wordNo) {
+        StringBuilder str = new StringBuilder();
+        if (wordNo != wordAmount - 1) {
+            boolean commaPresence = random.nextBoolean();
+            if (commaPresence) {
+                str.append(",");
+            }
+            str.append(" ");
+        }
+        return str.toString();
     }
 
     /**
