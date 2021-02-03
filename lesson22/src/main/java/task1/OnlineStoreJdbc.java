@@ -13,7 +13,8 @@ public class OnlineStoreJdbc {
      * The entry point of OnlineStoreJdbc program.
      * It connects to PostgreSQL and creates 3 tables
      * considered in lesson 14 by safely dropping
-     * previous table versions during each new run
+     * previous table versions during each new run.
+     * It contains logging to file and to console
      *
      * @param args Array with parameters of the program
      */
@@ -29,6 +30,7 @@ public class OnlineStoreJdbc {
      * savepoints
      */
     private static void workWithDatabase() {
+        log.debug("Application started...");
         String url = "jdbc:postgresql://localhost:5432/online_store";
         String user = "postgres";
         String pass = "postgress";
@@ -36,10 +38,10 @@ public class OnlineStoreJdbc {
         try (Connection connection = DriverManager.getConnection(url, user, pass)) {
             log.info("DB is successfully connected");
             DBUtils.renewDatabase(connection);
-            log.info("DB is renewed");
             makePreparedStatement(connection);
             makeBatching(connection);
             makeManualCommits(connection);
+            log.debug("Application was successfully finished");
         } catch (SQLException throwables) {
             log.error(throwables.getMessage());
         }
@@ -53,11 +55,14 @@ public class OnlineStoreJdbc {
      * @throws SQLException the SQL exception
      */
     private static void makeManualCommits(Connection connection) throws SQLException {
+        log.debug("Making manual commits with savepoints...");
         try (Statement statement = connection.createStatement()) {
             connection.setAutoCommit(false);
             statement.executeUpdate("INSERT INTO laptops VALUES (111, " +
                     "'MacBook Air M1 2020', 'Apple', 'China', 'macOS', 'M1', " +
                     "8, 13)");
+            log.warn("Manual commit is not done intentionally after the statement " +
+                    "announcement");
 
             Savepoint savepoint = connection.setSavepoint();
             statement.executeUpdate("INSERT INTO laptops VALUES (222, " +
@@ -65,7 +70,7 @@ public class OnlineStoreJdbc {
                     "16, 13)");
             connection.rollback(savepoint);
             connection.commit();
-            log.info("Manual commit is performed successfully");
+            log.info("Manual commits done successfully");
         } catch (SQLException throwables) {
             connection.rollback();
             log.error(throwables.getMessage());
@@ -81,6 +86,7 @@ public class OnlineStoreJdbc {
      * @throws SQLException the SQL exception
      */
     private static void makeBatching(Connection connection) throws SQLException {
+        log.debug("Making prepared statement with batching...");
         Integer[] idArgs = new Integer[]{1, 2, 3};
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "UPDATE customers SET payment_card_id=999 " +
@@ -102,6 +108,7 @@ public class OnlineStoreJdbc {
      * @param connection the DB connection object
      */
     private static void makePreparedStatement(Connection connection) throws SQLException {
+        log.debug("Making prepared statement...");
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM customers " +
                         "WHERE basket IS NOT NULL " +

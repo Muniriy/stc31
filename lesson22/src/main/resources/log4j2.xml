@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <RollingFile name="file" fileName="lesson22/app.log" filePattern="./lesson22/app-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%m%n"/>
+        </Console>
+        <JDBC name="online_store" tableName="logger_db">
+            <DriverManager connectionString="jdbc:postgresql://localhost:5432/online_store"
+                           driverClassName="org.postgresql.Driver" username="postgres"
+                           password="postgress"/>
+            <Column name="log_id" pattern="%u" isUnicode="false"/>
+            <Column name="entry_date" isEventTimestamp="true" isUnicode="false"/>
+            <Column name="logger" pattern="%logger" isUnicode="false"/>
+            <Column name="log_level" pattern="%level" isUnicode="false"/>
+            <Column name="message" pattern="%m" isUnicode="false"/>
+            <Column name="exception" pattern="%throwable" isUnicode="false"/>
+        </JDBC>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="file" level="DEBUG"/>
+            <AppenderRef ref="STDOUT" level="INFO"/>
+            <AppenderRef ref="online_store" level="TRACE"/>
+        </Root>
+    </Loggers>
+</Configuration>

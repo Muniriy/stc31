@@ -1,10 +1,15 @@
 package task1;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBUtils {
+
+    private static final Logger log = LogManager.getLogger(DBUtils.class);
 
     /**
      * This method renews the database so that each
@@ -14,7 +19,7 @@ public class DBUtils {
      * @throws SQLException the SQL exception
      */
     public static void renewDatabase(Connection connection) throws SQLException {
-
+        log.debug("BD renewing has begun...");
         try (Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS laptops;" +
                     "\n" +
@@ -53,6 +58,7 @@ public class DBUtils {
                     "INSERT INTO customers VALUES " +
                     "(6, 'Vicky', '2002-03-16', 'Asus Zenbook', 493);"
             );
+            log.info("DB is renewed");
         }
     }
 }
